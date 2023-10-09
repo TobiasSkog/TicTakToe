@@ -19,55 +19,69 @@ namespace TicTakToe.Logic.Computer
             NumberOfPiecesPlaced = 0;
         }
 
-        public MoveResult MakeMove()
+        public ((int XPos, int YPos), PlayerType Player, char PieceStyle) MakeMove()
         {
-            GameLogic.ForLoop(SolutionBoard.GameGrid, (i, j, piece) =>
-            {
-                GetNeighbours(piece);
-            });
-
-            FindNextMove();
-
-            return MoveResult.Success;
+            var movePosition = FindBestMove();
+            return (movePosition, BigBrain, ComputerPieceStyle);
         }
-
-        private void GetNeighbours(Piece piece)
+        //private MoveResult ComputerMakeMove((int XPos, int YPos) position)
+        //{
+        //    return GameBoard.GameGrid[position.XPos, position.YPos].PlacePiece(ComputerPieceStyle, BigBrain);
+        //}
+        private (int XPos, int YPos) FindBestMove()
         {
-            var playerNeighbours = 0;
-            var computerNeighbours = 0;
-            List<(int, int)> dxdy = new()
+            (int XPos, int YPos) nextMovePosition = new();
+            Dictionary<(int Xpos, int Ypos), PieceState> bestMoveGrid = new();
+
+            for (int i = 0; i < SolutionBoard.GridSizeX; i++)
             {
-                ( -1, -1 ), ( -1, 0 ), ( -1, 1 ),
-                (  0, -1 ),            (  0, 1 ),
-                (  1, -1 ), (  1, 0 ), (  1, 1 ),
-            };
-
-            foreach (var (dx, dy) in dxdy)
-            {
-                var neighbourX = ((piece.Position.Item1 + dx + SolutionBoard.GridSizeX) % SolutionBoard.GridSizeX);
-                var neighbourY = ((piece.Position.Item2 + dy + SolutionBoard.GridSizeY) % SolutionBoard.GridSizeY);
-                var neighbourPiece = SolutionBoard.GameGrid[neighbourX, neighbourY];
-
-
-                if (neighbourPiece.PieceState == PieceState.PlayerPlaced) playerNeighbours++;
-                else if (neighbourPiece.PieceState == PieceState.ComputerPlaced) computerNeighbours++;
-            }
-
-            piece.UpdatePlayerNeighbours(playerNeighbours, computerNeighbours, BigBrain);
-        }
-
-
-
-
-        private void FindNextMove()
-        {
-            foreach (var piece in SolutionBoard.GameGrid)
-            {
-                if (piece.PieceState == PieceState.ComputerPlaced)
+                for (int j = 0; j < SolutionBoard.GridSizeY; j++)
                 {
-
+                    bestMoveGrid.Add(SolutionBoard.GameGrid[i, j].Position, SolutionBoard.GameGrid[i, j].PieceState);
                 }
             }
+            var gridX = SolutionBoard.GridSizeX;
+            var gridY = SolutionBoard.GridSizeY;
+
+            if (gridX < 5 && gridX % 2 == 1)
+            {
+                var centerPos = (XPos: gridX / 2, YPos: gridY / 2);
+                if (bestMoveGrid[centerPos] == PieceState.NotPlaced)
+                {
+                    nextMovePosition = centerPos;
+                    return centerPos;
+                }
+            }
+
+
+            return (XPos: nextMovePosition.XPos, YPos: nextMovePosition.YPos);
+
+            //var playerNeighbours = 0;
+            //var computerNeighbours = 0;
+            //List<(int, int)> dxdy = new()
+            //{
+            //    ( -1, -1 ), ( -1, 0 ), ( -1, 1 ),
+            //    (  0, -1 ),            (  0, 1 ),
+            //    (  1, -1 ), (  1, 0 ), (  1, 1 ),
+            //};
+
+            //foreach (var (dx, dy) in dxdy)
+            //{
+            //    var neighbourX = ((piece.Position.Item1 + dx + SolutionBoard.GridSizeX) % SolutionBoard.GridSizeX);
+            //    var neighbourY = ((piece.Position.Item2 + dy + SolutionBoard.GridSizeY) % SolutionBoard.GridSizeY);
+            //    var neighbourPiece = SolutionBoard.GameGrid[neighbourX, neighbourY];
+
+
+            //    if (neighbourPiece.PieceState == PieceState.PlayerPlaced) playerNeighbours++;
+            //    else if (neighbourPiece.PieceState == PieceState.ComputerPlaced) computerNeighbours++;
+            //}
+
+            //piece.UpdatePlayerNeighbours(playerNeighbours, computerNeighbours, BigBrain);
         }
+
+
+
+
+
     }
 }

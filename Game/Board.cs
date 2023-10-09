@@ -19,20 +19,14 @@ namespace TicTakToe.Game
             var gameGridInitialization = new Piece[GridSizeX, GridSizeY];
             GameLogic.ForLoop(gameGridInitialization, (i, j, cell) =>
             {
-                var piecePos = new Tuple<int, int>(i, j);
+                var piecePos = (XPos: i, YPos: j);
                 gameGridInitialization[i, j] = new Piece(piecePos);
             });
 
             return gameGridInitialization;
         }
 
-        public void DrawBoard()
-        {
-            GameLogic.ForLoop(GameGrid, (i, j, cell) =>
-            {
-                Console.WriteLine($"[{(cell.PieceStyle)}{(i == GridSizeX - 1 ? "\n" : "")}]");
-            });
-        }
+
 
 
     }

@@ -4,13 +4,13 @@ namespace TicTakToe.Game
 {
     internal class Piece
     {
-        public Tuple<int, int> Position { get; private set; }
+        public (int XPos, int YPos) Position { get; private set; }
         public char PieceStyle { get; private set; }
         public PieceState PieceState { get; private set; }
         public int PlayerNeighbours { get; private set; }
         public int ComputerNeighbours { get; private set; }
 
-        public Piece(Tuple<int, int> position)
+        public Piece((int XPos, int YPos) position)
         {
             PlayerNeighbours = 0;
             ComputerNeighbours = 0;
@@ -19,7 +19,7 @@ namespace TicTakToe.Game
             PieceState = PieceState.NotPlaced;
         }
 
-        public MoveResult PlacePiece(char pieceStyle, PlayerType player)
+        public MoveResult PlacePiece(PlayerType player, char pieceStyle)
         {
             if (PieceState == PieceState.NotPlaced)
             {
@@ -32,15 +32,12 @@ namespace TicTakToe.Game
                 return MoveResult.Denied;
             }
         }
-
-        public void UpdatePlayerNeighbours(int playerNeighbours, int computerNeighbours, PlayerType playerType)
+        public void UpdateState(PlayerType player, char pieceStyle)
         {
-            if (playerType == PlayerType.Computer)
-            {
-                PlayerNeighbours = playerNeighbours;
-                ComputerNeighbours = computerNeighbours;
-            }
+            PieceState = (player == PlayerType.Player) ? PieceState.PlayerPlaced : PieceState.ComputerPlaced;
+            PieceStyle = pieceStyle;
         }
+
 
 
     }

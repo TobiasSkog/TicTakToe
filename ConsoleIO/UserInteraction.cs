@@ -28,8 +28,15 @@ namespace TicTakToe.ConsoleIO
 
         public static void Goodbye()
         {
-            Console.WriteLine("These are the game stats: \nGames Played: \nGames Won: \nLeast amount of draws for one game: \nMaximum amount of draws for one game: ");
+            Console.WriteLine("\n=========================================================================");
+            Console.WriteLine("\tThese are the game stats: " +
+                "\n\tGames Played: " +
+                "\n\tGames Won: " +
+                "\n\tLeast amount of draws for one game: " +
+                "\n\tMaximum amount of draws for one game: ");
+            Console.WriteLine("========================================================================= ");
             Console.WriteLine("Thanks for playing Tic Tac Toe!");
+
         }
     }
 }

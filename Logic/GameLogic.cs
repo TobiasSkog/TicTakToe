@@ -17,7 +17,7 @@ namespace TicTakToe.Logic
         public GameLogic()
         {
             InitializeGame();
-
+            GameLoop();
         }
         public void InitializeGame()
         {
@@ -33,39 +33,50 @@ namespace TicTakToe.Logic
 
         private void GameLoop()
         {
-            do
-            {
-                GetMove();
-
-            } while (true);
+            //DrawBoard();
+            //do
+            //{
+            var pieceInformation = GetMove();
+            UpdateGameState(pieceInformation);
+            Console.Clear();
+            DrawBoard();
+            //} while (true);
         }
 
-        private void GetMove()
+        public void UpdateGameState(((int XPos, int YPos) position, PlayerType player, char pieceStyle) info)
         {
-            var move = MoveResult.Denied;
-
-            do
+            GameBoard.GameGrid[info.position.XPos, info.position.YPos].UpdateState(info.player, info.pieceStyle);
+        }
+        public void DrawBoard()
+        {
+            GameLogic.ForLoop(GameBoard.GameGrid, (i, j, cell) =>
             {
+                Console.Write($"[{(cell.PieceStyle)}]{(j == GameBoard.GridSizeY - 1 ? "\n" : "")}");
+            });
+        }
+        private ((int XPos, int YPos), PlayerType Player, char PieceStyle) GetMove()
+        {
 
-                if (ComputerMoveNow)
-                {
-                    move = Comp.MakeMove();
 
-                }
-                else
-                {
-                    move = ConsoleIO.UserInteraction.GetPlayerMove();
-                }
-            } while (move == MoveResult.Denied);
+            //if (ComputerMoveNow)
+            //{
+            ComputerMoveNow ^= true;
+            return Comp.MakeMove();
+            //}
+            //else
+            //{
+            //    ComputerMoveNow ^= true;
+            //    return (ConsoleIO.UserInteraction.GetPlayerMove());
+            //}
+
 
         }
 
         public static void ForLoop(Piece[,] pieceArray, Action<int, int, Piece> action)
         {
-
-            for (int i = 0; i < pieceArray.GetUpperBound(0); i++)
+            for (int i = 0; i <= pieceArray.GetUpperBound(0); i++)
             {
-                for (int j = 0; j < pieceArray.GetUpperBound(1); j++)
+                for (int j = 0; j <= pieceArray.GetUpperBound(1); j++)
                 {
                     action(i, j, pieceArray[i, j]);
                 }
