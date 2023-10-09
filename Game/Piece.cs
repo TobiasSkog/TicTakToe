@@ -1,4 +1,4 @@
-﻿using TicTakToe.Logic;
+﻿using TicTakToe.Logic.Enums;
 
 namespace TicTakToe.Game
 {
@@ -6,22 +6,40 @@ namespace TicTakToe.Game
     {
         public Tuple<int, int> Position { get; private set; }
         public char PieceStyle { get; private set; }
-        public bool Placed { get; private set; }
-        public PlayerType Owner { get; private set; }
+        public PieceState PieceState { get; private set; }
+        public int PlayerNeighbours { get; private set; }
+        public int ComputerNeighbours { get; private set; }
 
         public Piece(Tuple<int, int> position)
         {
+            PlayerNeighbours = 0;
+            ComputerNeighbours = 0;
             Position = position;
             PieceStyle = ' ';
-            Placed = false;
-            Owner = PlayerType.NotClaimed;
+            PieceState = PieceState.NotPlaced;
         }
 
-        public void PlacePiece(char pieceStyle)
+        public MoveResult PlacePiece(char pieceStyle, PlayerType player)
         {
-            PieceStyle = pieceStyle;
+            if (PieceState == PieceState.NotPlaced)
+            {
+                PieceState = (player == PlayerType.Player) ? PieceState.PlayerPlaced : PieceState.ComputerPlaced;
+                PieceStyle = pieceStyle;
+                return MoveResult.Success;
+            }
+            else
+            {
+                return MoveResult.Denied;
+            }
+        }
 
-
+        public void UpdatePlayerNeighbours(int playerNeighbours, int computerNeighbours, PlayerType playerType)
+        {
+            if (playerType == PlayerType.Computer)
+            {
+                PlayerNeighbours = playerNeighbours;
+                ComputerNeighbours = computerNeighbours;
+            }
         }
 
 

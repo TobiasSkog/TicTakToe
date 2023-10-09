@@ -16,7 +16,7 @@
                     }
                 }
 
-                Console.WriteLine($"Invalid input. Number must be an integer greater than or equal to {minRange}.");
+                Console.WriteLine($"\nInvalid input. Number must be an integer greater than or equal to {minRange}.");
             }
         }
 

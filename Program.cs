@@ -1,11 +1,14 @@
-﻿namespace TicTakToe
+﻿using TicTakToe.Logic;
+
+namespace TicTakToe
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            var a = ConsoleIO.ConsoleIO.GetPlayerIcon();
-
+            ConsoleIO.UserInteraction.Welcome();
+            new GameLogic();
+            ConsoleIO.UserInteraction.Goodbye();
         }
     }
 }

@@ -1,37 +1,39 @@
-﻿namespace TicTakToe.Game
+﻿using TicTakToe.Logic;
+namespace TicTakToe.Game
 {
 
     internal class Board
     {
         public int GridSizeX { get; private set; }
         public int GridSizeY { get; private set; }
-        private char PlayerPiece { get; set; }
-        private char ComputerPiece { get; set; }
-        public Piece[,] BoardArray { get; private set; }
-        public Board(int gridSizeX, int gridSizeY, char playerPiece)
+        public Piece[,] GameGrid { get; private set; }
+        public Board(int gridSizeX, int gridSizeY)
         {
-            PlayerPiece = playerPiece;
-
-            ComputerPiece = (PlayerPiece == 'X') ? 'O' : 'X';
-
-
             GridSizeX = gridSizeX;
             GridSizeY = gridSizeY;
-            InitializeGameBoard();
+            GameGrid = NewGame();
         }
 
-        private Piece[,] InitializeGameBoard()
+        public Piece[,] NewGame()
         {
-            var boardArray = new Piece[GridSizeX, GridSizeY];
-            for (int i = 0; i < GridSizeX; i++)
+            var gameGridInitialization = new Piece[GridSizeX, GridSizeY];
+            GameLogic.ForLoop(gameGridInitialization, (i, j, cell) =>
             {
-                for (int j = 0; j < GridSizeY; j++)
-                {
-                    boardArray[i, j] = new Piece(new(i, j));
-                }
-            }
+                var piecePos = new Tuple<int, int>(i, j);
+                gameGridInitialization[i, j] = new Piece(piecePos);
+            });
 
-            return boardArray;
+            return gameGridInitialization;
         }
+
+        public void DrawBoard()
+        {
+            GameLogic.ForLoop(GameGrid, (i, j, cell) =>
+            {
+                Console.WriteLine($"[{(cell.PieceStyle)}{(i == GridSizeX - 1 ? "\n" : "")}]");
+            });
+        }
+
+
     }
 }

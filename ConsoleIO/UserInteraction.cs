@@ -1,6 +1,8 @@
-﻿namespace TicTakToe.ConsoleIO
+﻿using TicTakToe.Logic.Enums;
+
+namespace TicTakToe.ConsoleIO
 {
-    internal static class ConsoleIO
+    internal static class UserInteraction
     {
         public static void Welcome()
         {
@@ -9,6 +11,7 @@
 
         public static int GetBoardSize()
         {
+
             var boardSize = Validation.GetInteger("Enter the size of the game of Tic Tac Toe: ", 3);
 
             return boardSize;
@@ -18,9 +21,9 @@
             var playerIcon = Validation.GetCharFromSelection(prompt, allowedChars);
             return playerIcon;
         }
-        public static void GetPlayerMove()
+        public static MoveResult GetPlayerMove()
         {
-
+            return MoveResult.Denied;
         }
 
         public static void Goodbye()
