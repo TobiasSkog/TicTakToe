@@ -1,12 +1,12 @@
 ﻿namespace TicTakToe.Logic.Enums
 {
-    internal enum MoveResult
+    public enum MoveResult
     {
         Success,
         Denied
     }
 
-    internal enum PieceState
+    public enum PieceState
     {
         PlayerPlaced,
         ComputerPlaced,
@@ -15,8 +15,10 @@
 
     public enum PlayerType
     {
+        Invalid,
         Player,
         Computer,
+        Draw
     }
 
 }

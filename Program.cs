@@ -2,13 +2,13 @@
 
 namespace TicTakToe
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
             ConsoleIO.UserInteraction.Welcome();
-            new GameLogic();
-            ConsoleIO.UserInteraction.Goodbye();
+            var game = new GameLogic();
+            ConsoleIO.UserInteraction.Goodbye(game.Stats);
         }
     }
 }

@@ -2,43 +2,45 @@
 
 namespace TicTakToe.Game
 {
-    internal class Piece
+    public class Piece
     {
         public (int XPos, int YPos) Position { get; private set; }
-        public char PieceStyle { get; private set; }
+        public string PieceStyle { get; private set; }
         public PieceState PieceState { get; private set; }
-        public int PlayerNeighbours { get; private set; }
-        public int ComputerNeighbours { get; private set; }
 
         public Piece((int XPos, int YPos) position)
         {
-            PlayerNeighbours = 0;
-            ComputerNeighbours = 0;
             Position = position;
-            PieceStyle = ' ';
+            PieceStyle = " ";
             PieceState = PieceState.NotPlaced;
+
         }
 
-        public MoveResult PlacePiece(PlayerType player, char pieceStyle)
+        public Piece(int XPos, int YPos, PieceState pieceState, string pieceStyle)
         {
-            if (PieceState == PieceState.NotPlaced)
-            {
-                PieceState = (player == PlayerType.Player) ? PieceState.PlayerPlaced : PieceState.ComputerPlaced;
-                PieceStyle = pieceStyle;
-                return MoveResult.Success;
-            }
-            else
-            {
-                return MoveResult.Denied;
-            }
+            Position = (XPos, YPos);
+            PieceState = pieceState;
+            PieceStyle = pieceStyle;
         }
-        public void UpdateState(PlayerType player, char pieceStyle)
+
+        public MoveResult GetPlacementResult() => PieceState == PieceState.NotPlaced ? MoveResult.Success : MoveResult.Denied;
+
+        public void UpdatePiece(PlayerType player, string pieceStyle)
+        {
+            PieceState = (player == PlayerType.Player) ? PieceState.PlayerPlaced : PieceState.ComputerPlaced;
+            PieceStyle = pieceStyle;
+        }
+        public void AIEvaluation(PlayerType player, string pieceStyle)
         {
             PieceState = (player == PlayerType.Player) ? PieceState.PlayerPlaced : PieceState.ComputerPlaced;
             PieceStyle = pieceStyle;
         }
 
-
+        public void ResetPiece()
+        {
+            PieceState = PieceState.NotPlaced;
+            PieceStyle = " ";
+        }
 
     }
 }

@@ -1,8 +1,8 @@
-﻿using TicTakToe.Logic.Enums;
+﻿using TicTakToe.Game;
 
 namespace TicTakToe.ConsoleIO
 {
-    internal static class UserInteraction
+    public static class UserInteraction
     {
         public static void Welcome()
         {
@@ -16,25 +16,31 @@ namespace TicTakToe.ConsoleIO
 
             return boardSize;
         }
-        public static char GetPlayerIcon(string prompt, string allowedChars)
+        public static string GetPlayerIcon(string prompt, string allowedChars)
         {
             var playerIcon = Validation.GetCharFromSelection(prompt, allowedChars);
             return playerIcon;
         }
-        public static MoveResult GetPlayerMove()
+        public static (int X, int Y) GetPlayerMove(string prompt, Board gameBoard)
         {
-            return MoveResult.Denied;
+            var playerPosition = Validation.IsValidMove(prompt, gameBoard);
+            return playerPosition;
+        }
+        public static bool PlayAgain(string prompt)
+        {
+            var answer = Validation.PlayAgain(prompt);
+            return answer;
         }
 
-        public static void Goodbye()
+        public static void Goodbye(GameStatistics stats)
         {
-            Console.WriteLine("\n=========================================================================");
+            Console.WriteLine("\n=======================================================");
             Console.WriteLine("\tThese are the game stats: " +
-                "\n\tGames Played: " +
-                "\n\tGames Won: " +
-                "\n\tLeast amount of draws for one game: " +
-                "\n\tMaximum amount of draws for one game: ");
-            Console.WriteLine("========================================================================= ");
+                $"\n\tGames Played: {stats.GamesPlayed}" +
+                $"\n\tGames Won: {stats.GamesWon} " +
+                $"\n\tLeast amount of draws for one game: {stats.LowestMoveCount}" +
+                $"\n\tMaximum amount of draws for one game: {stats.HighestMoveCount}");
+            Console.WriteLine("=======================================================");
             Console.WriteLine("Thanks for playing Tic Tac Toe!");
 
         }
